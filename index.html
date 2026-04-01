@@ -319,7 +319,7 @@ clock.innerText=new Date().toLocaleTimeString("de-DE");
 /* TIMES */
 let todayTimes=null;
 
-fetch("times_2026_gorlitz_Final.json")
+fetch("times_2026_gorlitz_FINAL.json")
 .then(r=>r.json())
 .then(data=>{
 todayTimes=data.find(x=>x.Date===new Date().toISOString().slice(0,10));
