@@ -5,25 +5,32 @@
 <title>Assalam TV</title>
 
 <style>
+  .idara{
+font-family: "Amiri", "Scheherazade New", serif;
+font-size:32px;
+color:#FFD700;
+text-shadow:0 0 8px rgba(255,215,0,0.6);
+}
 .glow{
 animation:glowPulse 2s infinite;
 border:2px solid gold !important;
 }
-body{
+html, body{
+height:100%;
 margin:0;
+overflow:hidden;
 background:#050505;
 color:white;
 font-family:Arial;
-overflow:hidden;
 }
 
 /* HEADER */
 .header{
-height:150px;
+height:120px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:10px 30px;
+padding:5px 20px;
 border-bottom:3px solid gold;
 }
 
@@ -34,8 +41,8 @@ border-bottom:3px solid gold;
 .de{color:#fff;}
 
 .bismillah{text-align:center;}
-.bismillah .ar{font-size:60px;}
-.bismillah .de{font-size:18px;color:#bbb;}
+.bismillah .ar{font-size:45px;}
+.bismillah .de{font-size:14px;color:#bbb;}
 
 /* GRID */
 .container{
@@ -43,7 +50,7 @@ display:grid;
 grid-template-columns: 26% 48% 26%;
 gap:16px;
 padding:16px;
-height:calc(100vh - 220px - 70px);
+height:calc(100% - 190px);
 margin-bottom:6px;
 }
 
@@ -131,7 +138,7 @@ justify-content:space-between;
 .hadithTop{
 flex:2;
 color:#FFD700;
-font-size:32px;
+font-size:38px;
 text-align:center;
 display:flex;
 align-items:center;
@@ -214,7 +221,7 @@ animation:scroll 60s linear infinite;
 <!-- HEADER -->
 <div class="header">
 
-<div style="display:flex;align-items:center;gap:15px;">
+<div style="display:flex;align-items:center;gap:12px;">
 <img src="LogoAssalam.jpg" class="logo">
 <div>
 <div class="ar">جمعية السلام غورليتز</div>
@@ -227,11 +234,18 @@ animation:scroll 60s linear infinite;
 <div class="de">Im Namen Allahs, des Allerbarmers, des Barmherzigen</div>
 </div>
 
-<div style="display:flex;align-items:center;gap:10px;">
+<<div style="display:flex;align-items:center;gap:12px;">
+
+<!-- testi -->
+<div style="text-align:right;">
 <div class="ar">لا تنسونا من دعائكم</div>
-<img src="LogoApk.png" class="logo2">
+<div class="ar idara">إدارة المسجد</div>
 </div>
 
+<!-- logo -->
+<img src="LogoApk.png" class="logo2">
+
+</div>
 </div>
 
 <!-- GRID -->
@@ -306,6 +320,7 @@ animation:scroll 60s linear infinite;
 </div>
 
 <script>
+  let sequenceStart = null;
   let duaList=[];
 let duaIndex=0;
 
@@ -394,7 +409,6 @@ if(!next) next={name:"Fajr",time:toDate(todayTimes.Fajr)};
 /* IQAMA TIME */
 let iqamaMin = (next.name==="Isha") ? 10 : 20;
 let iqamaTime = new Date(next.time.getTime() + iqamaMin*60000);
-
 let diffAdhan = (next.time - now) / 1000;
 let diffAfterAdhan = -diffAdhan; // tempo dopo adhan
 let inSequence = false;
@@ -405,13 +419,20 @@ let iqamaPhase = adhanDuration + iqamaDuration;
 let salatDuration = 180;
 let duaDuration = 300;
 
+
 /* ================= SEQUENZA MOSCHEA ================= */
 
 if(diffAdhan <= 0){
+
+  if(sequenceStart === null){
+    sequenceStart = Date.now();
+  }
+
   inSequence = true;
 
+  let t = (Date.now() - sequenceStart) / 1000;
+
 /* DOPO ADHAN */
-let t = diffAfterAdhan;
 
 /* ADHAN */
 if(t <= adhanDuration){
@@ -468,6 +489,7 @@ iqama.innerText="";
 }else{
 
 /* torna normale */
+sequenceStart = null;
 nextPrayer.innerText=next.name;
 
 let diff=(next.time-now)/1000;
