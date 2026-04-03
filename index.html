@@ -383,25 +383,27 @@ clock.innerText=new Date().toLocaleTimeString("de-DE");
 function loadWeather(){
 
 fetch("https://api.open-meteo.com/v1/forecast?latitude=51.15&longitude=14.98&current_weather=true")
-.then(r=>r.json())
-.then(data=>{
+.then(r => r.json())
+.then(data => {
+
+if(!data.current_weather){
+throw new Error("No data");
+}
 
 let temp = Math.round(data.current_weather.temperature);
 let code = data.current_weather.weathercode;
 
 weatherTemp.innerText = temp + "°C";
 
-/* ICONA WEATHER*/
-let icon = "☀️";
+let icons = ["☀️","☀️","⛅","☁️","🌫","🌫","🌧","🌧","⛈"];
+weatherIcon.innerText = icons[Math.floor(code/10)] || "☀️";
 
-if(code >= 0 && code <= 1) icon="☀️";
-else if(code <= 3) icon="⛅";
-else if(code <= 48) icon="☁️";
-else if(code <= 67) icon="🌧";
-else if(code <= 77) icon="🌨";
-else if(code <= 99) icon="⛈";
+})
+.catch(() => {
 
-weatherIcon.innerText = icon;
+/* fallback */
+weatherTemp.innerText = "20°C";
+weatherIcon.innerText = "☀️";
 
 });
 
