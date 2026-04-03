@@ -432,6 +432,7 @@ box-sizing:border-box;
   document.documentElement.requestFullscreen?.();
 
 /* ================= VARIABILI ================= */
+let lastPrayerName = null;
 let sequenceStart = null;
 let inSequence = false;
 
@@ -456,8 +457,39 @@ let code = data.current_weather.weathercode;
 
 weatherTemp.innerText = temp + "°C";
 
-let icons = ["☀️","☀️","⛅","☁️","🌫","🌫","🌧","🌧","⛈"];
-weatherIcon.innerText = icons[Math.floor(code/10)] || "☀️";
+let hour = new Date().getHours();
+
+/* giorno o notte */
+let isNight = (hour >= 20 || hour < 6);
+
+let icon = "☀️";
+
+/* cielo sereno */
+if(code === 0){
+icon = isNight ? "🌙" : "☀️";
+}
+
+/* poco nuvoloso */
+else if(code <= 3){
+icon = isNight ? "🌙☁️" : "⛅";
+}
+
+/* nuvole */
+else if(code <= 48){
+icon = "☁️";
+}
+
+/* pioggia */
+else if(code <= 67){
+icon = "🌧";
+}
+
+/* temporale */
+else if(code >= 80){
+icon = "⛈";
+}
+
+weatherIcon.innerText = icon;
 
 })
 .catch(()=>{
@@ -541,8 +573,9 @@ let diffAdhan = (next.time - now)/1000;
 /* ================= SEQUENZA ================= */
 
 /* AVVIO */
-if(diffAdhan <= 0 && sequenceStart === null){
+if(diffAdhan <= 0 && sequenceStart === null && lastPrayerName !== next.name){
 sequenceStart = Date.now();
+lastPrayerName = next.name;
 }
 
 /* ATTIVA */
@@ -601,8 +634,13 @@ nextPrayer.innerHTML =
 "🤲 الدعاء<br>"+d.ar+
 "<br><span style='font-size:20px;color:white'>"+d.de+"</span>";
 
-if(Math.floor(Date.now()/8000) % duaList.length !== duaIndex){
+if(!window.lastDuaChange){
+window.lastDuaChange = Date.now();
+}
+
+if(Date.now() - window.lastDuaChange > 5000){
 duaIndex++;
+window.lastDuaChange = Date.now();
 }
 }
 
@@ -613,6 +651,11 @@ iqama.innerText="";
 }else{
 sequenceStart = null;
 inSequence = false;
+
+/* reset sicurezza: aspetta prossima salat */
+if(diffAdhan > 60){
+lastPrayerName = null;
+}
 }
 
 }
