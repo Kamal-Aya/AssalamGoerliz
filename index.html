@@ -6,6 +6,9 @@
 <title>Assalam TV</title>
 
 <style>
+  body{
+zoom:0.9;
+}
   .idara{
 font-family: "Amiri", "Scheherazade New", serif;
 font-size:32px;
@@ -27,7 +30,8 @@ font-family:Arial;
 
 /* HEADER */
 .header{
-height:100px;
+  /*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+height:95px;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -48,10 +52,11 @@ border-bottom:3px solid gold;
 /* GRID */
 .container{
 display:grid;
-grid-template-columns: 26% 48% 26%;
-gap:16px;
-padding:16px;
-height:calc(100vh - 155px);
+grid-template-columns: 33% 34% 31%;
+gap:10px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+padding:10px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+
+height:calc(100vh - 120px);/*SOLUZIONE MIGLIORE (100-155)(STABILE SU TV)*/
 margin-bottom:6px;
 }
 
@@ -60,7 +65,7 @@ margin-bottom:6px;
 border:2px solid gold;
 border-radius:12px;
 background:#000;
-padding:12px;
+padding:8px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
 display:flex;
 flex-direction:column;
 overflow:hidden;
@@ -82,6 +87,37 @@ margin-bottom:8px;
 .big{font-size:34px;}
 .mid{font-size:24px;}
 .small{font-size:20px;color:#bbb;}
+
+/*WEATHER*/
+#weatherBox{
+width:150px;
+height:90px;
+border-radius:50%;
+border:3px solid gold;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+animation:glowPulse 4s infinite;
+background:rgba(0,0,0,0.6);
+box-shadow:0 0 15px rgba(255,215,0,0.5);
+}
+
+
+#weatherCity{
+font-size:14px;
+color:#bbb;
+}
+
+#weatherIcon{
+font-size:28px;
+}
+
+#weatherTemp{
+font-size:22px;
+color:#FFD700;
+font-weight:bold;
+}
 
 /* COUNTDOWN */
 #countBox{
@@ -179,7 +215,7 @@ margin:6px 0;
 position:fixed;
 bottom:0;
 width:100%;
-height:55px;
+height:45px;/*SOLUZIONE MIGLIORE 55 (STABILE SU TV)*/
 display:flex;
 border-top:3px solid gold;
 background:black;
@@ -234,12 +270,20 @@ box-sizing:border-box;
 </div>
 
 <div class="bismillah">
+
+
+
 <div class="ar">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
 <div class="de">Im Namen Allahs, des Allerbarmers, des Barmherzigen</div>
+
+</div>
+<div id="weatherBox">
+  <div id="weatherCity">Görlitz</div>
+  <div id="weatherIcon">☀️</div>
+  <div id="weatherTemp">--°C</div>
 </div>
 
-<<div style="display:flex;align-items:center;gap:12px;">
-
+<div style="display:flex;align-items:center;gap:12px;">
 <!-- testi -->
 <div style="text-align:right;">
 <div class="ar">لا تنسونا من دعائكم</div>
@@ -335,6 +379,38 @@ setInterval(()=>{
 clock.innerText=new Date().toLocaleTimeString("de-DE");
 },1000);
 
+/*WEATHER*/
+function loadWeather(){
+
+fetch("https://api.open-meteo.com/v1/forecast?latitude=51.15&longitude=14.98&current_weather=true")
+.then(r=>r.json())
+.then(data=>{
+
+let temp = Math.round(data.current_weather.temperature);
+let code = data.current_weather.weathercode;
+
+weatherTemp.innerText = temp + "°C";
+
+/* ICONA WEATHER*/
+let icon = "☀️";
+
+if(code >= 0 && code <= 1) icon="☀️";
+else if(code <= 3) icon="⛅";
+else if(code <= 48) icon="☁️";
+else if(code <= 67) icon="🌧";
+else if(code <= 77) icon="🌨";
+else if(code <= 99) icon="⛈";
+
+weatherIcon.innerText = icon;
+
+});
+
+}
+
+/* aggiorna ogni 10 minuti */
+loadWeather();
+setInterval(loadWeather, 600000);
+
 /* TIMES */
 let todayTimes=null;
 
@@ -425,9 +501,7 @@ let duaDuration = 300;
 
 
 /* ================= SEQUENZA MOSCHEA ================= */
-
-if(diffAdhan <= 0){
-
+if(diffAdhan <= 0 && diffAdhan > -3600){
   if(sequenceStart === null){
     sequenceStart = Date.now();
   }
@@ -572,7 +646,7 @@ let i=0, showHadith=true;
 fetch("Hadith.json").then(r=>r.json()).then(d=>hadiths=d);
 fetch("aya.json").then(r=>r.json()).then(d=>ayas=d);
 
-setInterval(()=>{
+function updateHadith(){
 
 if(showHadith && hadiths.length){
 
@@ -595,7 +669,13 @@ hadithInfo.innerText="Sura "+a.source;
 showHadith=!showHadith;
 i++;
 
-},20000);
+}
+
+/* ✅ MOSTRA SUBITO */
+setTimeout(updateHadith, 500);
+
+/* 🔁 CONTINUA CICLO */
+setInterval(updateHadith, 20000);
 
 /* SCROLL */
 fetch("avvisi.json").then(r=>r.json()).then(d=>{
