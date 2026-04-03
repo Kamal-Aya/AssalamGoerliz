@@ -6,8 +6,13 @@
 <title>Assalam TV</title>
 
 <style>
-  body{
-zoom:0.9;
+  html, body{
+height:100vh;
+width:100vw;
+margin:0;
+padding:0;
+overflow:hidden;
+background:#050505;
 }
   .idara{
 font-family: "Amiri", "Scheherazade New", serif;
@@ -29,13 +34,25 @@ font-family:Arial;
 }
 
 /* HEADER */
-.header{
-  /*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+/*.header{
+  SOLUZIONE MIGLIORE (STABILE SU TV)
 height:95px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:5px 20px;
+border-bottom:3px solid gold;
+}*/
+.header{
+height:10vh;
+min-height:80px;
+max-height:110px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:0 20px;
 border-bottom:3px solid gold;
 }
 
@@ -50,25 +67,43 @@ border-bottom:3px solid gold;
 .bismillah .de{font-size:14px;color:#bbb;}
 
 /* GRID */
-.container{
+/* .container{
 display:grid;
 grid-template-columns: 33% 34% 31%;
-gap:10px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
-padding:10px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+gap:10px;(SOLUZIONE MIGLIORE (STABILE SU TV))
+padding:10px;(SOLUZIONE MIGLIORE (STABILE SU TV))
 
-height:calc(100vh - 120px);/*SOLUZIONE MIGLIORE (100-155)(STABILE SU TV)*/
+height:calc(100vh - 120px);(SOLUZIONE MIGLIORE (100-155)(STABILE SU TV))
 margin-bottom:6px;
+}*/
+.container{
+height:calc(100vh - 10vh - 45px); /* header + ticker */
+display:grid;
+grid-template-columns: 33% 34% 33%;
+gap:12px;
+padding:12px;
 }
 
 /* BOX */
-.box{
+/*.box{
 border:2px solid gold;
 border-radius:12px;
 background:#000;
-padding:8px;/*SOLUZIONE MIGLIORE (STABILE SU TV)*/
+padding:8px;(SOLUZIONE MIGLIORE (STABILE SU TV))
 display:flex;
 flex-direction:column;
 overflow:hidden;
+}*/
+.box{
+border:2px solid gold;
+border-radius:16px;
+background:linear-gradient(180deg,#000,#050505);
+padding:10px;
+display:flex;
+flex-direction:column;
+overflow:hidden;
+
+box-shadow:0 0 20px rgba(255,215,0,0.15);
 }
 
 .title{
@@ -82,27 +117,40 @@ margin-bottom:8px;
 .title .de{font-size:16px;}
 
 .leftCol{display:flex;flex-direction:column;gap:12px;}
-#clock{font-size:60px;text-align:center;}
 
-.big{font-size:34px;}
-.mid{font-size:24px;}
-.small{font-size:20px;color:#bbb;}
+#clock{font-size:4.5vh;}
+
+.big{font-size:2.6vh;}
+.mid{font-size:2vh;}
+.small{font-size:1.6vh;}
+
+.prayerItem{
+font-size:2.6vh;
+}
+
+#nextPrayer{font-size:3.5vh;}
+#countdown{font-size:6vh;}
+#iqama{font-size:2.2vh;}
+
+.hadithTop{font-size:3vh;}
+.hadithBottom{font-size:2.2vh;}
 
 /*WEATHER*/
 #weatherBox{
 width:150px;
 height:90px;
+
 border-radius:50%;
 border:3px solid gold;
+
 display:flex;
 flex-direction:column;
 align-items:center;
 justify-content:center;
-animation:glowPulse 4s infinite;
-background:rgba(0,0,0,0.6);
-box-shadow:0 0 15px rgba(255,215,0,0.5);
-}
 
+background:rgba(0,0,0,0.7);
+box-shadow:0 0 15px rgba(255,215,0,0.6);
+}
 
 #weatherCity{
 font-size:14px;
@@ -211,16 +259,28 @@ margin:6px 0;
 }
 
 /* SCROLL */
-#scrollBox{
+/*#scrollBox{
 position:fixed;
 bottom:0;
 width:100%;
-height:45px;/*SOLUZIONE MIGLIORE 55 (STABILE SU TV)*/
+height:45px;(SOLUZIONE MIGLIORE 55 (STABILE SU TV))
+display:flex;
+border-top:3px solid gold;
+background:black;
+}*/
+#scrollBox{
+position:absolute;
+bottom:0;
+height:45px;
+width:100%;
 display:flex;
 border-top:3px solid gold;
 background:black;
 }
 
+#ticker span{
+animation:scroll 40s linear infinite;
+}
 #scrollTitle{
 color:#FFD700;
 padding:10px;
@@ -368,27 +428,28 @@ box-sizing:border-box;
 </div>
 
 <script>
-  let sequenceStart = null;
-  let duaList=[];
+
+  document.documentElement.requestFullscreen?.();
+
+/* ================= VARIABILI ================= */
+let sequenceStart = null;
+let inSequence = false;
+
+let duaList=[];
 let duaIndex=0;
 
-fetch("dua.json").then(r=>r.json()).then(d=>duaList=d);  
+fetch("dua.json").then(r=>r.json()).then(d=>duaList=d);
 
-/* CLOCK */
+/* ================= CLOCK ================= */
 setInterval(()=>{
 clock.innerText=new Date().toLocaleTimeString("de-DE");
 },1000);
 
-/*WEATHER*/
+/* ================= WEATHER ================= */
 function loadWeather(){
-
 fetch("https://api.open-meteo.com/v1/forecast?latitude=51.15&longitude=14.98&current_weather=true")
 .then(r => r.json())
 .then(data => {
-
-if(!data.current_weather){
-throw new Error("No data");
-}
 
 let temp = Math.round(data.current_weather.temperature);
 let code = data.current_weather.weathercode;
@@ -399,21 +460,16 @@ let icons = ["☀️","☀️","⛅","☁️","🌫","🌫","🌧","🌧","⛈"]
 weatherIcon.innerText = icons[Math.floor(code/10)] || "☀️";
 
 })
-.catch(() => {
-
-/* fallback */
-weatherTemp.innerText = "20°C";
-weatherIcon.innerText = "☀️";
-
+.catch(()=>{
+weatherTemp.innerText="--°C";
+weatherIcon.innerText="☀️";
 });
-
 }
 
-/* aggiorna ogni 10 minuti */
 loadWeather();
-setInterval(loadWeather, 600000);
+setInterval(loadWeather,600000);
 
-/* TIMES */
+/* ================= TIMES ================= */
 let todayTimes=null;
 
 fetch("times_2026_gorlitz_FINAL.json")
@@ -423,7 +479,7 @@ todayTimes=data.find(x=>x.Date===new Date().toISOString().slice(0,10));
 updateDate();
 });
 
-/* DATE */
+/* ================= DATE ================= */
 function updateDate(){
 
 let d=new Date();
@@ -437,30 +493,16 @@ dayNameAr.innerText=daysAr[i];
 dayNameDe.innerText=daysDe[i];
 dateNormal.innerText=d.toLocaleDateString("de-DE");
 
-/* ✅ HIJRI FORMATO NUOVO */
 if(todayTimes && todayTimes.Hijri){
 
 let p = todayTimes.Hijri.split("-");
+let months=["محرم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","رمضان","شوال","ذو القعدة","ذو الحجة"];
 
-let day = p[0];
-let monthNum = parseInt(p[1]);
-let year = p[2];
-
-let months=[
-"محرم","صفر","ربيع الأول","ربيع الثاني",
-"جمادى الأولى","جمادى الآخرة","رجب","شعبان",
-"رمضان","شوال","ذو القعدة","ذو الحجة"
-];
-
-let monthName = months[monthNum-1];
-
-dateHijri.innerText = year+" "+monthName+"  "+day;
-
+dateHijri.innerText = p[2]+" "+months[p[1]-1]+" "+p[0];
+}
 }
 
-}
-
-/* PRAYER */
+/* ================= HELPER ================= */
 function toDate(t){
 let [h,m]=t.split(":");
 let d=new Date();
@@ -468,64 +510,67 @@ d.setHours(h,m,0);
 return d;
 }
 
+/* ================= MAIN LOOP ================= */
 setInterval(()=>{
 
-if(!todayTimes)return;
+if(!todayTimes) return;
 
 let now=new Date();
 let prayers=["Fajr","Dhuhr","Asr","Maghrib","Isha"];
 let next=null;
 
+/* TROVA PROSSIMA SALAT */
 for(let p of prayers){
 let t=toDate(todayTimes[p]);
-
-/* ✅ PRENDE ANCHE LA SALAT APPENA INIZIATA */
-if(t > now || Math.abs(now - t) < 60000){
+if(t > now){
 next={name:p,time:t};
 break;
 }
 }
 
-if(!next) next={name:"Fajr",time:toDate(todayTimes.Fajr)};
+if(!next){
+next={name:"Fajr",time:toDate(todayTimes.Fajr)};
+}
 
-/* IQAMA TIME */
+/* IQAMA */
 let iqamaMin = (next.name==="Isha") ? 10 : 20;
 let iqamaTime = new Date(next.time.getTime() + iqamaMin*60000);
-let diffAdhan = (next.time - now) / 1000;
-let diffAfterAdhan = -diffAdhan; // tempo dopo adhan
-let inSequence = false;
 
+let diffAdhan = (next.time - now)/1000;
+
+/* ================= SEQUENZA ================= */
+
+/* AVVIO */
+if(diffAdhan <= 0 && sequenceStart === null){
+sequenceStart = Date.now();
+}
+
+/* ATTIVA */
+if(sequenceStart !== null){
+
+inSequence = true;
+
+let t = (Date.now() - sequenceStart)/1000;
+
+/* DURATE */
 let adhanDuration = 60;
-let iqamaDuration = iqamaMin * 60;
-let iqamaPhase = adhanDuration + iqamaDuration;
+let iqamaDelay = iqamaMin * 60;
+let iqamaDisplay = 50;
 let salatDuration = 180;
 let duaDuration = 300;
-
-
-/* ================= SEQUENZA MOSCHEA ================= */
-if(diffAdhan <= 0 && diffAdhan > -3600){
-  if(sequenceStart === null){
-    sequenceStart = Date.now();
-  }
-
-  inSequence = true;
-
-  let t = (Date.now() - sequenceStart) / 1000;
-
-/* DOPO ADHAN */
 
 /* ADHAN */
 if(t <= adhanDuration){
 
 nextPrayer.innerHTML="🕌 الأذان<br>Adhan";
-countdown.innerText = (adhanDuration - t).toString().padStart(2,"0");
+countdown.innerText="";
 iqama.innerText="";
 countBox.classList.remove("glow");
 
-/* IQAMA COUNTDOWN */
-}else if(t <= iqamaPhase){
+/* COUNTDOWN IQAMA */
+}else if(t <= adhanDuration + iqamaDelay){
 
-let remain = iqamaPhase - t;
+let remain = (adhanDuration + iqamaDelay) - t;
 
 nextPrayer.innerHTML="⏳ الإقامة<br>bis zur Iqama";
 countdown.innerText = new Date(remain*1000).toISOString().substr(14,5);
@@ -533,24 +578,23 @@ iqama.innerText="";
 countBox.classList.add("glow");
 
 /* IQAMA */
-}else if(t <= iqamaPhase + 60){
+}else if(t <= adhanDuration + iqamaDelay + iqamaDisplay){
 
 nextPrayer.innerHTML="📢 إقامة الصلاة<br>Iqama";
-countdown.innerText="01:00";
+countdown.innerText="";
 iqama.innerText="📵 Bitte Handy ausschalten";
 
 /* SALAT */
-}else if(t <= iqamaPhase + 60 + salatDuration){
+}else if(t <= adhanDuration + iqamaDelay + iqamaDisplay + salatDuration){
 
 nextPrayer.innerHTML="🕌 الصلاة<br>As-Salat";
-countdown.innerText="03:00";
+countdown.innerText="";
 iqama.innerText="";
 
 /* DUAA */
-}else if(t <= iqamaPhase + 60 + salatDuration + duaDuration){
+}else if(t <= adhanDuration + iqamaDelay + iqamaDisplay + salatDuration + duaDuration){
 
 if(duaList.length){
-
 let d = duaList[duaIndex % duaList.length];
 
 nextPrayer.innerHTML =
@@ -560,28 +604,20 @@ nextPrayer.innerHTML =
 if(Math.floor(Date.now()/8000) % duaList.length !== duaIndex){
 duaIndex++;
 }
-
 }
 
-countdown.innerText="05:00";
+countdown.innerText="";
 iqama.innerText="";
 
+/* RESET */
 }else{
-
-/* torna normale */
 sequenceStart = null;
-nextPrayer.innerText=next.name;
-
-let diff=(next.time-now)/1000;
-countdown.innerText=new Date(diff*1000).toISOString().substr(11,8);
-iqama.innerText="";
+inSequence = false;
 }
 
 }
+
 /* ================= NORMALE ================= */
-
-
-
 if(!inSequence){
 
 nextPrayer.innerText=next.name;
@@ -598,11 +634,9 @@ countBox.classList.remove("glow");
 }
 
 iqama.innerText="";
-
 }
 
-
-/* 🕌 TABLE CON SALAT ATTUALE */
+/* ================= TABLE ================= */
 let icons={Fajr:"🌅",Dhuhr:"☀️",Asr:"🌤",Maghrib:"🌇",Isha:"🌙"};
 
 let html="";
@@ -617,14 +651,7 @@ Isha:{ar:"العشاء",de:"Isha"}
 };
 
 let tStart = toDate(todayTimes[p]);
-let tEnd;
-
-if(p !== "Isha"){
-let nextIndex = prayers.indexOf(p)+1;
-tEnd = toDate(todayTimes[prayers[nextIndex]]);
-}else{
-tEnd = new Date(tStart.getTime()+90*60000);
-}
+let tEnd = new Date(tStart.getTime()+90*60000);
 
 let activeClass = (now >= tStart && now < tEnd) ? "active" : "";
 
@@ -641,9 +668,8 @@ table.innerHTML=html;
 
 },1000);
 
-/* HADITH (non toccato) */
-let hadiths=[], ayas=[];
-let i=0, showHadith=true;
+/* ================= HADITH ================= */
+let hadiths=[], ayas=[], i=0, showHadith=true;
 
 fetch("Hadith.json").then(r=>r.json()).then(d=>hadiths=d);
 fetch("aya.json").then(r=>r.json()).then(d=>ayas=d);
@@ -651,7 +677,6 @@ fetch("aya.json").then(r=>r.json()).then(d=>ayas=d);
 function updateHadith(){
 
 if(showHadith && hadiths.length){
-
 let h=hadiths[i%hadiths.length];
 
 hadithAr.innerText="قال رسول الله ﷺ\n\n"+h.ar;
@@ -659,31 +684,24 @@ hadithDe.innerText="Der Gesandte Allahs ﷺ sagte:\n\n"+h.de;
 hadithInfo.innerText=h.source;
 
 }else if(ayas.length){
-
 let a=ayas[i%ayas.length];
 
 hadithAr.innerText="بسم الله الرحمن الرحيم\n\n"+a.ar;
 hadithDe.innerText="Im Namen Allahs\n\n"+a.de;
 hadithInfo.innerText="Sura "+a.source;
-
 }
 
 showHadith=!showHadith;
 i++;
-
 }
 
-/* ✅ MOSTRA SUBITO */
-setTimeout(updateHadith, 500);
+setTimeout(updateHadith,500);
+setInterval(updateHadith,20000);
 
-/* 🔁 CONTINUA CICLO */
-setInterval(updateHadith, 20000);
-
-/* SCROLL */
+/* ================= SCROLL ================= */
 fetch("avvisi.json").then(r=>r.json()).then(d=>{
 tickerText.innerText=d.join(" ✦ ");
 });
-
 
 </script>
 
