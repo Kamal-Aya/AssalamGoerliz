@@ -6,14 +6,21 @@
 <title>Assalam TV</title>
 
 <style>
+  .nextPrayerGlow{
+animation:glowPulse 2s infinite;
+border:2px solid gold;
+background:rgba(255,215,0,0.15);
+}
   html, body{
 height:100vh;
 width:100vw;
+overflow:hidden;
 margin:0;
 padding:0;
 overflow:hidden;
-background:#050505;
+background:#2b2b2b;
 }
+
   .idara{
 font-family: "Amiri", "Scheherazade New", serif;
 font-size:32px;
@@ -28,32 +35,31 @@ html, body{
 height:100%;
 margin:0;
 overflow:hidden;
-background:#050505;
+background:#000;
 color:white;
 font-family:Arial;
 }
 
 /* HEADER */
-/*.header{
-  SOLUZIONE MIGLIORE (STABILE SU TV)
-height:95px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:5px 20px;
-border-bottom:3px solid gold;
-}*/
+
 .header{
-height:10vh;
-min-height:80px;
-max-height:110px;
+height:12vh;
+min-height:100px;
+max-height:140px;
 
 display:flex;
 justify-content:space-between;
 align-items:center;
 
-padding:0 20px;
-border-bottom:3px solid gold;
+padding:10px 25px;
+margin:10px;
+
+border:none;
+border-radius:16px;
+
+background:linear-gradient(180deg,#000,#050505);
+
+box-shadow:0 0 20px rgba(255,215,0,0.2);
 }
 
 .logo{width:130px;border-radius:50%;border:3px solid gold;}
@@ -67,45 +73,34 @@ border-bottom:3px solid gold;
 .bismillah .de{font-size:14px;color:#bbb;}
 
 /* GRID */
-/* .container{
-display:grid;
-grid-template-columns: 33% 34% 31%;
-gap:10px;(SOLUZIONE MIGLIORE (STABILE SU TV))
-padding:10px;(SOLUZIONE MIGLIORE (STABILE SU TV))
-
-height:calc(100vh - 120px);(SOLUZIONE MIGLIORE (100-155)(STABILE SU TV))
-margin-bottom:6px;
-}*/
 .container{
-height:calc(100vh - 10vh - 45px); /* header + ticker */
+height:calc(100vh - 12vh - 100px);
+
 display:grid;
 grid-template-columns: 33% 34% 33%;
-gap:12px;
-padding:12px;
+
+gap:15px;
+padding:15px;
+
+background:#3a3a3a;
+border-radius:20px;
 }
 
 /* BOX */
-/*.box{
-border:2px solid gold;
-border-radius:12px;
-background:#000;
-padding:8px;(SOLUZIONE MIGLIORE (STABILE SU TV))
-display:flex;
-flex-direction:column;
-overflow:hidden;
-}*/
+
 .box{
-border:2px solid gold;
-border-radius:16px;
-background:linear-gradient(180deg,#000,#050505);
-padding:10px;
+justify-content:space-between;
+border:none;
+outline:2px solid #1f1f1f;
 display:flex;
 flex-direction:column;
 overflow:hidden;
+background:#111;
+border-radius:16px;
+padding:8px;
 
-box-shadow:0 0 20px rgba(255,215,0,0.15);
+box-shadow:0 4px 10px rgba(0,0,0,0.6);
 }
-
 .title{
 text-align:center;
 background:#111;
@@ -118,7 +113,11 @@ margin-bottom:8px;
 
 .leftCol{display:flex;flex-direction:column;gap:12px;}
 
-#clock{font-size:4.5vh;}
+#clock{
+font-size:4.5vh;
+text-align:center;
+width:100%;
+}
 
 .big{font-size:2.6vh;}
 .mid{font-size:2vh;}
@@ -126,6 +125,8 @@ margin-bottom:8px;
 
 .prayerItem{
 font-size:2.6vh;
+padding:10px;
+margin:5px 0;
 }
 
 #nextPrayer{font-size:3.5vh;}
@@ -138,7 +139,7 @@ font-size:2.6vh;
 /*WEATHER*/
 #weatherBox{
 width:150px;
-height:90px;
+height:85px;
 
 border-radius:50%;
 border:3px solid gold;
@@ -153,7 +154,7 @@ box-shadow:0 0 15px rgba(255,215,0,0.6);
 }
 
 #weatherCity{
-font-size:14px;
+font-size:15px;
 color:#bbb;
 }
 
@@ -182,7 +183,7 @@ transition: all 0.5s ease;
 content:"";
 position:absolute;
 inset:0;
-background:rgba(0,0,0,0.3);
+background:rgba(0,0,0,0.55);
 }
 #countBox *{position:relative;z-index:2;}
 
@@ -196,18 +197,44 @@ background:rgba(0,0,0,0.3);
 
 .prayerItem{
 flex:1;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
+
 font-size:30px;
-padding:8px;
-border-radius:8px;
-background:#111;
+
+padding:12px;
+margin:6px 0;
+
+background:#1a1a1a;
+
+border-radius:14px;
+
+box-shadow:0 4px 10px rgba(0,0,0,0.5);
+
+transition:0.3s;
+}
+.prayerItem:hover{
+background:#222;
 }
 
 .active{
-background:rgba(255,215,0,0.2);
-color:#FFD700;
+background:rgba(255,215,0,0.15) !important;
+color:#FFD700 !important;
+
+font-weight:bold;
+
+border-radius:12px;
+
+box-shadow:0 0 12px rgba(255,215,0,0.5);
+
+transform:scale(1.04);
+transition:0.3s;
+}
+.active .ar{
+font-size:1.5em;
+transform:scale(1.1);
 }
 
 /* RIGHT */
@@ -257,41 +284,54 @@ height:2px;
 background:linear-gradient(to right, transparent, gold, transparent);
 margin:6px 0;
 }
+.header,
+#scrollBox{
+background:#111;
+}
 
 /* SCROLL */
-/*#scrollBox{
-position:fixed;
-bottom:0;
-width:100%;
-height:45px;(SOLUZIONE MIGLIORE 55 (STABILE SU TV))
-display:flex;
-border-top:3px solid gold;
-background:black;
-}*/
+
 #scrollBox{
 position:absolute;
-bottom:0;
-height:45px;
-width:100%;
+bottom:15px;
+left:10px;
+right:10px;
+
+height:65px;
+
 display:flex;
-border-top:3px solid gold;
-background:black;
+align-items:center;
+
+background:#111;
+border-radius:16px;
+
+outline:2px solid #1f1f1f;
+
+box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
+
 
 #ticker span{
 animation:scroll 40s linear infinite;
 }
 #scrollTitle{
+display:flex;
+align-items:center;
+justify-content:center;
+
 color:#FFD700;
 padding:10px;
 font-size:26px;
 }
 
 #ticker{
+display: flex;
+align-items: center;
 overflow:hidden;
 white-space:nowrap;
 flex:1;
 font-size:34px;
+color:#FFD700;
 }
 
 #ticker span{
@@ -313,8 +353,47 @@ animation:scroll 60s linear infinite;
 *{
 box-sizing:border-box;
 }
+#blackScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:9999;
+opacity:0;
+pointer-events:none;
+transition:opacity 0.5s;
+}
+
+#blackScreen.show{
+opacity:1;
+pointer-events:auto;
+}
+
+#blackScreenText{
+color:#FFD700;
+font-size:50px;
+text-align:center;
+}
+
+#blackScreenSub{
+color:white;
+font-size:30px;
+margin-top:20px;
+}
 </style>
+
+
 </head>
+<div id="blackScreen">
+  <div id="blackScreenText">🕌 الصلاة</div>
+  <div id="blackScreenSub">📵 Bitte Handy ausschalten</div>
+</div>
 
 <body>
 
@@ -561,11 +640,24 @@ break;
 }
 
 if(!next){
-next={name:"Fajr",time:toDate(todayTimes.Fajr)};
+let tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate()+1);
+
+let fajr = toDate(todayTimes.Fajr);
+fajr.setDate(fajr.getDate()+1);
+
+next={name:"Fajr",time:fajr};
 }
 
 /* IQAMA */
-let iqamaMin = (next.name==="Isha") ? 10 : 20;
+let iqamaMin;
+
+if(sequenceStart === null){
+iqamaMin = (next.name==="Isha") ? 5 : 15;
+window.fixedIqama = iqamaMin;
+}else{
+iqamaMin = window.fixedIqama;
+}
 let iqamaTime = new Date(next.time.getTime() + iqamaMin*60000);
 
 let diffAdhan = (next.time - now)/1000;
@@ -573,7 +665,9 @@ let diffAdhan = (next.time - now)/1000;
 /* ================= SEQUENZA ================= */
 
 /* AVVIO */
-if(diffAdhan <= 0 && sequenceStart === null && lastPrayerName !== next.name){
+
+/*if(diffAdhan <= 5 && sequenceStart === null && lastPrayerName !== next.name)*/
+if(diffAdhan <= 5 && diffAdhan >= -60 && sequenceStart === null && lastPrayerName !== next.name){
 sequenceStart = Date.now();
 lastPrayerName = next.name;
 }
@@ -589,8 +683,8 @@ let t = (Date.now() - sequenceStart)/1000;
 let adhanDuration = 60;
 let iqamaDelay = iqamaMin * 60;
 let iqamaDisplay = 50;
-let salatDuration = 180;
-let duaDuration = 300;
+let salatDuration = 900;//15 minuti
+let duaDuration = 900;//15 minuti
 
 /* ADHAN */
 if(t <= adhanDuration){
@@ -620,6 +714,12 @@ iqama.innerText="📵 Bitte Handy ausschalten";
 /* SALAT */
 }else if(t <= adhanDuration + iqamaDelay + iqamaDisplay + salatDuration){
 
+blackScreen.classList.add("show");
+
+nextPrayer.innerHTML="🕌 الصلاة<br>As-Salat";
+countdown.innerText="";
+iqama.innerText="";
+
 nextPrayer.innerHTML="🕌 الصلاة<br>As-Salat";
 countdown.innerText="";
 iqama.innerText="";
@@ -648,6 +748,7 @@ countdown.innerText="";
 iqama.innerText="";
 
 /* RESET */
+blackScreen.classList.remove("show");
 }else{
 sequenceStart = null;
 inSequence = false;
@@ -694,11 +795,24 @@ Isha:{ar:"العشاء",de:"Isha"}
 };
 
 let tStart = toDate(todayTimes[p]);
-let tEnd = new Date(tStart.getTime()+90*60000);
 
-let activeClass = (now >= tStart && now < tEnd) ? "active" : "";
+let nextIndex = prayers.indexOf(p) + 1;
+let nextTime;
 
-html+=`<div class="prayerItem ${activeClass}">
+if(nextIndex < prayers.length){
+nextTime = toDate(todayTimes[prayers[nextIndex]]);
+}else{
+nextTime = new Date(tStart);
+nextTime.setHours(23,59,59);
+}
+
+let activeClass = (now >= tStart && now < nextTime) ? "active" : "";
+
+/* evidenzia prossima salat */
+/*let nextClass = (p === next.name && !inSequence) ? "nextPrayerGlow" : "";*/
+
+
+  html+=`<div class="prayerItem ${activeClass}">
 <div>
 <span class="ar">${icons[p]} ${names[p].ar}</span><br>
 <span class="de">${names[p].de}</span>
