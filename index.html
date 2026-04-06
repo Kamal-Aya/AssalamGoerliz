@@ -38,6 +38,8 @@ overflow:hidden;
 background:#000;
 color:white;
 font-family:Arial;
+display:flex;              /* 🔥 */
+flex-direction:column;     /* 🔥 */
 }
 
 /* HEADER */
@@ -74,8 +76,7 @@ box-shadow:0 0 20px rgba(255,215,0,0.2);
 
 /* GRID */
 .container{
-height:calc(100vh - 12vh - 130px); /* 🔧 CAMBIA QUESTO VALORE px dal fondo*/
-
+flex:1; /* 🔥 QUESTO RISOLVE TUTTO */
 
 display:grid;
 grid-template-columns: 33% 34% 33%;
@@ -85,6 +86,8 @@ padding:15px;
 
 background:#3a3a3a;
 border-radius:20px;
+
+min-height:0; /* 🔥 IMPORTANTISSIMO */
 }
 
 /* BOX */
@@ -293,18 +296,20 @@ background:#111;
 /* SCROLL */
 
 #scrollBox{
-position:absolute;
-bottom:0px;
-left:10px;
-right:10px;
-margin:0;
+position:relative; /* 🔥 NON più absolute */
+margin:10px;
 height:65px;
+
 display:flex;
 align-items:center;
+
 background:#111;
 border-radius:16px;
 outline:2px solid #1f1f1f;
-box-shadow:0 0 10px rgba(0,0,0,0.6);
+}
+
+.leftCol, .centerCol, .rightCol{
+min-height:0;
 }
 
 
