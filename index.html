@@ -74,24 +74,17 @@ box-shadow:0 0 20px rgba(255,215,0,0.2);
 
 /* GRID */
 .container{
-position:absolute;
-top:12vh;     /* header */
-bottom:70px;  /* ⬅️ UGUALE a scroll height */
-left:0;
-right:0;
+height:calc(100vh - 12vh - 130px); /* 🔧 CAMBIA QUESTO VALORE px dal fondo*/
+
+
 display:grid;
-grid-template-columns: 33% 34% 31%;
+grid-template-columns: 33% 34% 33%;
+
 gap:15px;
 padding:15px;
+
 background:#3a3a3a;
 border-radius:20px;
-}
-.container{
-top:12vh;     /* header */
-bottom:70px;  /* ⬅️ UGUALE a scroll height */
-
-left:0;
-right:0;
 }
 
 /* BOX */
@@ -300,12 +293,12 @@ background:#111;
 /* SCROLL */
 
 #scrollBox{
-position:fixed;
+position:absolute;
 bottom:0px;
 left:10px;
 right:10px;
 margin:0;
-height:70px;
+height:65px;
 display:flex;
 align-items:center;
 background:#111;
@@ -313,6 +306,7 @@ border-radius:16px;
 outline:2px solid #1f1f1f;
 box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
+
 
 #ticker span{
 animation:scroll 40s linear infinite;
@@ -908,7 +902,9 @@ tickerText.innerText=d.join(" ✦ ");
 /* ===========================
    🕌 JUMUA SAFE MODE (100%)
    =========================== */
-
+/* ===========================
+   🕌 JUMUA MODE 100% STABILE
+   =========================== */
 
 /* ⏱️ TEMPI (MODIFICABILI) */
 let ADHAN_TIME = 50;     // ⬅️ secondi Adhan
