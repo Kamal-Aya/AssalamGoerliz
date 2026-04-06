@@ -90,6 +90,42 @@ border-radius:20px;
 min-height:0; /* 🔥 IMPORTANTISSIMO */
 }
 
+/*=====Date Box=====*/
+#dateBox{
+display:flex;
+flex-direction:column;
+justify-content:center;
+gap:10px;
+}
+
+/* GIORNI (SOPRA) */
+.daysRow{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+}
+
+.day{
+font-size:3.2vh;  /* 🔥 GRANDE */
+font-weight:bold;
+color:#FFD700;
+}
+
+/* DATE (SOTTO) */
+.datesRow{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 30px;
+}
+
+.date{
+font-size:3.2vh;
+color:#ccc;
+}
+
+
 /* BOX */
 
 .box{
@@ -117,21 +153,23 @@ margin-bottom:8px;
 
 .leftCol{display:flex;flex-direction:column;gap:12px;}
 
-#clock{
-font-size:4.5vh;
-text-align:center;
-width:100%;
+#clockBox{
+display:flex;
+align-items:center;
+justify-content:center;
 }
+
+#clock{
+font-size:8vh;   /* 🔥 GRANDE */
+font-weight:bold;
+text-align:center;
+color:#FFD700;
+}
+
 
 .big{font-size:2.6vh;}
 .mid{font-size:2vh;}
 .small{font-size:1.6vh;}
-
-.prayerItem{
-font-size:2.6vh;
-padding:10px;
-margin:5px 0;
-}
 
 #nextPrayer{font-size:3.5vh;}
 #countdown{font-size:6vh;}
@@ -197,26 +235,23 @@ background:rgba(0,0,0,0.55);
 
 /* CENTER */
 .centerCol{display:flex;flex-direction:column;}
-.prayerGrid{flex:1;display:flex;flex-direction:column;gap:8px;}
-
+.prayerGrid{
+flex:1;display:flex;flex-direction:column;gap:6px;
+justify-content:space-between; /* 🔥 IMPORTANTISSIMO */
+}
 .prayerItem{
-flex:1;
-
+flex:unset;     /* 🔥 FIX */
+height:auto;    /* 🔥 */
 display:flex;
 justify-content:space-between;
 align-items:center;
-
+font-size:2.3vh;
 font-size:30px;
-
-padding:12px;
-margin:6px 0;
-
+padding:8px;
+margin:4px 0;
 background:#1a1a1a;
-
 border-radius:14px;
-
 box-shadow:0 4px 10px rgba(0,0,0,0.5);
-
 transition:0.3s;
 }
 .prayerItem:hover{
@@ -481,24 +516,22 @@ margin-top:20px;
 <!-- LEFT -->
 <div class="leftCol">
 
-<div class="box">
-<div class="title"><div class="ar">الوقت</div><div class="de">Uhrzeit</div></div>
+<div class="box" id="clockBox">
 <div id="clock"></div>
 </div>
 
-<div class="box">
-<div class="title"><div class="ar">التاريخ</div><div class="de">Datum</div></div>
+<div class="box" id="dateBox">
 
-<div style="display:flex;justify-content:center;gap:60px;">
-<div>
-<div id="dayNameDe" class="big de"></div>
-<div id="dateNormal" class="mid de"></div>
+<!-- GIORNI -->
+<div class="daysRow">
+<div id="dayNameDe" class="day de"></div>
+<div id="dayNameAr" class="day ar"></div>
 </div>
 
-<div style="text-align:right;">
-<div id="dayNameAr" class="big ar"></div>
-<div id="dateHijri" class="mid ar"></div>
-</div>
+<!-- DATE -->
+<div class="datesRow">
+<div id="dateNormal" class="date de"></div>
+<div id="dateHijri" class="date ar"></div>
 </div>
 
 </div>
@@ -729,7 +762,7 @@ blackScreen.classList.remove("show");
 let adhanDuration = 60;
 let iqamaDelay = iqamaMin * 60;
 let iqamaDisplay = 50;
-let salatDuration = 600;//10 minuti
+let salatDuration = 500;//10 minuti
 let duaDuration = 900;//15 minuti
 
 /* ADHAN */
@@ -913,7 +946,7 @@ tickerText.innerText=d.join(" ✦ ");
 
 /* ⏱️ TEMPI (MODIFICABILI) */
 let ADHAN_TIME = 50;     // ⬅️ secondi Adhan
-let JUMUA_TIME = 3600;   // ⬅️ durata Jumua (1 ora = 3600)
+let JUMUA_TIME = 2700;   // ⬅️ durata Jumua (1 ora = 3600)
 
 /* =========================== */
 
