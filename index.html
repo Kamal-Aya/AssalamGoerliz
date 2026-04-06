@@ -74,10 +74,11 @@ box-shadow:0 0 20px rgba(255,215,0,0.2);
 
 /* GRID */
 .container{
-height:calc(100vh - 12vh - 100px);
+height:calc(100vh - 12vh - 130px); /* 🔧 CAMBIA QUESTO VALORE px dal fondo*/
+
 
 display:grid;
-grid-template-columns: 33% 34% 33%;
+grid-template-columns: 33% 34% 31%;
 
 gap:15px;
 padding:15px;
@@ -139,7 +140,7 @@ margin:5px 0;
 /*WEATHER*/
 #weatherBox{
 width:150px;
-height:85px;
+height:100px;
 
 border-radius:50%;
 border:3px solid gold;
@@ -154,16 +155,16 @@ box-shadow:0 0 15px rgba(255,215,0,0.6);
 }
 
 #weatherCity{
-font-size:15px;
+font-size:18px;
 color:#bbb;
 }
 
 #weatherIcon{
-font-size:28px;
+font-size:32px;
 }
 
 #weatherTemp{
-font-size:22px;
+font-size:28px;
 color:#FFD700;
 font-weight:bold;
 }
@@ -293,20 +294,16 @@ background:#111;
 
 #scrollBox{
 position:absolute;
-bottom:15px;
+bottom:0px;
 left:10px;
 right:10px;
-
+margin:0;
 height:65px;
-
 display:flex;
 align-items:center;
-
 background:#111;
 border-radius:16px;
-
 outline:2px solid #1f1f1f;
-
 box-shadow:0 0 10px rgba(0,0,0,0.6);
 }
 
@@ -386,6 +383,44 @@ color:white;
 font-size:30px;
 margin-top:20px;
 }
+/*JUMUA*/
+#jumuaScreen{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+
+background:black;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+z-index:99999;
+}
+
+.jumuaBox{
+text-align:center;
+}
+
+.jumuaAr{
+font-size:70px;
+color:#FFD700;
+margin-bottom:20px;
+}
+
+.jumuaDe{
+font-size:40px;
+color:white;
+}
+
+.jumuaMsg{
+font-size:30px;
+color:#FFD700;
+margin-top:20px;
+}
+
 </style>
 
 
@@ -449,7 +484,7 @@ margin-top:20px;
 <div class="box">
 <div class="title"><div class="ar">التاريخ</div><div class="de">Datum</div></div>
 
-<div style="display:flex;justify-content:space-between;">
+<div style="display:flex;justify-content:center;gap:60px;">
 <div>
 <div id="dayNameDe" class="big de"></div>
 <div id="dateNormal" class="mid de"></div>
@@ -679,11 +714,17 @@ inSequence = true;
 
 let t = (Date.now() - sequenceStart)/1000;
 
+if(t > 1800){ // 30 min sicurezza
+sequenceStart = null;
+inSequence = false;
+blackScreen.classList.remove("show");
+}
+
 /* DURATE */
 let adhanDuration = 60;
 let iqamaDelay = iqamaMin * 60;
 let iqamaDisplay = 50;
-let salatDuration = 900;//15 minuti
+let salatDuration = 600;//10 minuti
 let duaDuration = 900;//15 minuti
 
 /* ADHAN */
@@ -749,7 +790,9 @@ iqama.innerText="";
 
 /* RESET */
 blackScreen.classList.remove("show");
+
 }else{
+blackScreen.classList.remove("show");
 sequenceStart = null;
 inSequence = false;
 
@@ -808,9 +851,6 @@ nextTime.setHours(23,59,59);
 
 let activeClass = (now >= tStart && now < nextTime) ? "active" : "";
 
-/* evidenzia prossima salat */
-/*let nextClass = (p === next.name && !inSequence) ? "nextPrayerGlow" : "";*/
-
 
   html+=`<div class="prayerItem ${activeClass}">
 <div>
@@ -859,6 +899,123 @@ setInterval(updateHadith,20000);
 fetch("avvisi.json").then(r=>r.json()).then(d=>{
 tickerText.innerText=d.join(" ✦ ");
 });
+/* ===========================
+   🕌 JUMUA SAFE MODE (100%)
+   =========================== */
+
+
+/* ⏱️ TEMPI (MODIFICABILI) */
+let ADHAN_TIME = 50;     // ⬅️ secondi Adhan
+let JUMUA_TIME = 3600;   // ⬅️ durata Jumua (1 ora = 3600)
+
+/* =========================== */
+
+let jumuaActive = false;
+let jumuaStart = null;
+
+function handleJumua(){
+
+let now = new Date();
+
+/* SOLO VENERDI */
+if(now.getDay() !== 5){
+hideOverlay();
+return;
+}
+
+/* ORARIO AVVIO (14:00) */
+let jumuaTime = new Date();
+jumuaTime.setHours(14,0,0);
+
+/* DIFFERENZA */
+let diff = (now - jumuaTime)/1000;
+
+/* AVVIO */
+if(diff >= 0 && !jumuaActive){
+jumuaActive = true;
+jumuaStart = Date.now();
+}
+
+/* SE ATTIVO */
+if(jumuaActive){
+
+let t = (Date.now() - jumuaStart)/1000;
+
+/* 🕌 ADHAN */
+if(t <= ADHAN_TIME){
+
+showOverlay(`
+🕌 الأذان<br>
+Adhan
+`);
+
+/* 🕌 KHUTBA + SALAT */
+}else if(t <= (ADHAN_TIME + JUMUA_TIME)){
+
+showOverlay(`
+خطبة وصلاة الجمعة<br>
+Freitagsgebet<br><br>
+
+📵 Bitte Handys ausschalten<br>
+📵 Spegnere i telefoni<br><br>
+
+انصتوا يرحمكم الله<br>
+Hört zu, möge Allah euch barmherzig sein
+`);
+
+/* 🔄 FINE */
+}else{
+jumuaActive = false;
+hideOverlay();
+}
+
+}
+
+}
+
+/* ================= UI ================= */
+
+function showOverlay(text){
+
+let el = document.getElementById("jumuaOverlay");
+
+if(!el){
+el = document.createElement("div");
+el.id="jumuaOverlay";
+
+el.style.position="fixed";
+el.style.top="0";
+el.style.left="0";
+el.style.width="100%";
+el.style.height="100%";
+el.style.background="black";
+el.style.display="flex";
+el.style.alignItems="center";
+el.style.justifyContent="center";
+el.style.zIndex="99999";
+
+document.body.appendChild(el);
+}
+
+el.innerHTML = `
+<div style="
+text-align:center;
+color:#FFD700;
+font-size:50px;
+line-height:1.6;
+">
+${text}
+</div>
+`;
+}
+
+function hideOverlay(){
+let el = document.getElementById("jumuaOverlay");
+if(el) el.remove();
+}
+
+/* LOOP */
+setInterval(handleJumua, 1000);
 
 </script>
 
