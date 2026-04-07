@@ -611,51 +611,48 @@ clock.innerText=new Date().toLocaleTimeString("de-DE");
 
 /* ================= WEATHER ================= */
 window.addEventListener("DOMContentLoaded", () => {
-
   const weatherCityEl = document.getElementById("weatherCity");
   const weatherTempEl = document.getElementById("weatherTemp");
   const weatherIconEl = document.getElementById("weatherIcon");
 
-  const lat = 51.15;   // Görlitz
-  const lon = 14.98;
-
-  weatherCityEl.innerText = "Görlitz";
+  const city = "Görlitz";
+  weatherCityEl.innerText = city;
 
   async function loadWeather() {
     try {
-     const url = "https://corsproxy.io/?https://api.open-meteo.com/v1/forecast?latitude=51.15&longitude=14.98&current_weather=true&timezone=auto";
+      const url = "https://wttr.in/Gorlitz?format=j1";
 
       const response = await fetch(url);
+      if (!response.ok) throw new Error("API meteo non risponde");
+
       const data = await response.json();
 
-      if (!data.current_weather) throw new Error("Meteo non disponibile");
+      if (!data.current_condition || !data.current_condition[0]) {
+        throw new Error("Nessun meteo attuale");
+      }
 
-      const temp = Math.round(data.current_weather.temperature);
-      const code = data.current_weather.weathercode;
-
+      const temp = data.current_condition[0].temp_C;
       weatherTempEl.innerText = temp + "°C";
 
-      const hour = new Date().getHours();
-      const isNight = hour >= 20 || hour < 6;
-
+      const desc = data.current_condition[0].weatherDesc[0]?.value || "";
       let icon = "☀️";
-      if (code === 0) icon = isNight ? "🌙" : "☀️";
-      else if (code <= 3) icon = isNight ? "🌙☁️" : "⛅";
-      else if (code <= 48) icon = "☁️";
-      else if (code <= 67) icon = "🌧";
-      else icon = "⛈";
+      if (desc.toLowerCase().includes("rain")) icon = "🌧️";
+      else if (desc.toLowerCase().includes("cloud")) icon = "☁️";
+      else if (desc.toLowerCase().includes("snow")) icon = "❄️";
+      else if (desc.toLowerCase().includes("sun")) icon = "☀️";
+      else if (desc.toLowerCase().includes("storm")) icon = "⛈️";
 
       weatherIconEl.innerText = icon;
 
     } catch (err) {
-      console.error("ERRORE METEO:", err);
+      console.error("Errore meteo:", err);
       weatherTempEl.innerText = "--°C";
       weatherIconEl.innerText = "⚠️";
     }
   }
 
   loadWeather();
-  setInterval(loadWeather, 10 * 60 * 1000);
+  setInterval(loadWeather, 10*60*1000);
 });
 /* ================= WEATHER ================= */
 /* ================= TIMES ================= */
