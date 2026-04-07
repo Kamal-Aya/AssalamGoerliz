@@ -385,7 +385,8 @@ color:#FFD700;
 #ticker span{
 display:inline-block;
 padding-left:100%;
-animation:scroll 60s linear infinite;
+/* ⏱️ VELOCITÀ SCROLL (più alto = più lento) */
+animation:scroll 120s linear infinite;
 }
 
 @keyframes scroll{
@@ -634,8 +635,36 @@ window.addEventListener("DOMContentLoaded", () => {
       const temp = data.current_condition[0].temp_C;
       weatherTempEl.innerText = temp + "°C";
 
-      const desc = data.current_condition[0].weatherDesc[0]?.value || "";
-      let icon = "☀️";
+      const desc = data.current_condition[0].weatherDesc[0]?.value.toLowerCase() || "";
+
+/* GIORNO / NOTTE */
+let hour = new Date().getHours();
+let isNight = (hour >= 20 || hour < 6);
+
+let icon = isNight ? "🌙" : "☀️";
+
+/* CONDIZIONI METEO COMPLETE */
+if (desc.includes("sunny") || desc.includes("clear")) {
+  icon = isNight ? "🌙" : "☀️";
+}
+else if (desc.includes("partly cloudy")) {
+  icon = isNight ? "🌙☁️" : "⛅";
+}
+else if (desc.includes("cloud") || desc.includes("overcast")) {
+  icon = "☁️";
+}
+else if (desc.includes("mist") || desc.includes("fog")) {
+  icon = "🌫️";
+}
+else if (desc.includes("rain") || desc.includes("drizzle")) {
+  icon = "🌧️";
+}
+else if (desc.includes("snow")) {
+  icon = "❄️";
+}
+else if (desc.includes("thunder")) {
+  icon = "⛈️";
+}
       if (desc.toLowerCase().includes("rain")) icon = "🌧️";
       else if (desc.toLowerCase().includes("cloud")) icon = "☁️";
       else if (desc.toLowerCase().includes("snow")) icon = "❄️";
