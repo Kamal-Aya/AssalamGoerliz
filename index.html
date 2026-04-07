@@ -623,7 +623,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   async function loadWeather() {
     try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&timezone=auto`;
+     const url = "https://corsproxy.io/?https://api.open-meteo.com/v1/forecast?latitude=51.15&longitude=14.98&current_weather=true&timezone=auto";
 
       const response = await fetch(url);
       const data = await response.json();
