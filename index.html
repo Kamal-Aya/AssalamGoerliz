@@ -972,75 +972,75 @@ tickerText.innerText=d.join(" ✦ ");
    🕌 JUMUA SAFE MODE (100%)
    =========================== */
 /* ===========================
-   🕌 JUMUA MODE 100% STABILE
+   🕌 JUMUA MODE STABILE 100%
    =========================== */
 
 /* ⏱️ TEMPI (MODIFICABILI) */
-let ADHAN_TIME = 50;     // ⬅️ secondi Adhan
-let JUMUA_TIME = 2700;   // ⬅️ durata Jumua (1 ora = 3600)
+let ADHAN_TIME = 50;      // ⬅️ secondi Adhan
+let JUMUA_TIME = 2700;    // ⬅️ durata Jumua (es: 2700 = 45 min)
 
 /* =========================== */
 
-let jumuaActive = false;
-let jumuaStart = null;
+let jumuaDoneToday = false;
 
 function handleJumua(){
 
-let now = new Date();
+  let now = new Date();
 
-/* SOLO VENERDI */
-if(now.getDay() !== 5){
-hideOverlay();
-return;
-}
+  /* SOLO VENERDI */
+  if(now.getDay() !== 5){
+    jumuaDoneToday = false; // reset per settimana prossima
+    hideOverlay();
+    return;
+  }
 
-/* ORARIO AVVIO (14:00) */
-let jumuaTime = new Date();
-jumuaTime.setHours(14,0,0);
+  /* ORARIO FISSO 14:00 */
+  let start = new Date();
+  start.setHours(14,0,0,0);
 
-/* DIFFERENZA */
-let diff = (now - jumuaTime)/1000;
+  let elapsed = (now - start) / 1000;
 
-/* AVVIO */
-if(diff >= 0 && !jumuaActive){
-jumuaActive = true;
-jumuaStart = Date.now();
-}
+  /* PRIMA DELLE 14:00 */
+  if(elapsed < 0){
+    hideOverlay();
+    return;
+  }
 
-/* SE ATTIVO */
-if(jumuaActive){
+  /* DOPO CHE È FINITO → NON BLOCCARE */
+  if(elapsed > (ADHAN_TIME + JUMUA_TIME)){
+    if(!jumuaDoneToday){
+      jumuaDoneToday = true;
+      hideOverlay();
+      console.log("✅ Jumua finita → ritorno normale");
+    }
+    return;
+  }
 
-let t = (Date.now() - jumuaStart)/1000;
+  /* 🕌 ADHAN */
+  if(elapsed <= ADHAN_TIME){
 
-/* 🕌 ADHAN */
-if(t <= ADHAN_TIME){
-
-showOverlay(`
+    showOverlay(`
 🕌 الأذان<br>
 Adhan
 `);
 
-/* 🕌 KHUTBA + SALAT */
-}else if(t <= (ADHAN_TIME + JUMUA_TIME)){
+  /* 🕌 KHUTBA + SALAT */
+  } else {
 
-showOverlay(`
+    showOverlay(`
+<div style="font-size:60px;">🕌</div><br>
+
 خطبة وصلاة الجمعة<br>
 Freitagsgebet<br><br>
 
-📵 Bitte Handys ausschalten<br>
-📵 Spegnere i telefoni<br><br>
+📵  الرجاء وضع الهاتف على الصامت<br>
+📵 Bitte Handys ausschalten<br><br>
 
 انصتوا يرحمكم الله<br>
 Hört zu, möge Allah euch barmherzig sein
 `);
 
-/* 🔄 FINE */
-}else{
-jumuaActive = false;
-hideOverlay();
-}
-
-}
+  }
 
 }
 
@@ -1048,46 +1048,45 @@ hideOverlay();
 
 function showOverlay(text){
 
-let el = document.getElementById("jumuaOverlay");
+  let el = document.getElementById("jumuaOverlay");
 
-if(!el){
-el = document.createElement("div");
-el.id="jumuaOverlay";
+  if(!el){
+    el = document.createElement("div");
+    el.id="jumuaOverlay";
 
-el.style.position="fixed";
-el.style.top="0";
-el.style.left="0";
-el.style.width="100%";
-el.style.height="100%";
-el.style.background="black";
-el.style.display="flex";
-el.style.alignItems="center";
-el.style.justifyContent="center";
-el.style.zIndex="99999";
+    el.style.position="fixed";
+    el.style.top="0";
+    el.style.left="0";
+    el.style.width="100%";
+    el.style.height="100%";
+    el.style.background="black";
+    el.style.display="flex";
+    el.style.alignItems="center";
+    el.style.justifyContent="center";
+    el.style.zIndex="99999";
 
-document.body.appendChild(el);
-}
+    document.body.appendChild(el);
+  }
 
-el.innerHTML = `
-<div style="
-text-align:center;
-color:#FFD700;
-font-size:50px;
-line-height:1.6;
-">
-${text}
-</div>
-`;
+  el.innerHTML = `
+  <div style="
+    text-align:center;
+    color:#FFD700;
+    font-size:50px;
+    line-height:1.6;
+  ">
+  ${text}
+  </div>
+  `;
 }
 
 function hideOverlay(){
-let el = document.getElementById("jumuaOverlay");
-if(el) el.remove();
+  let el = document.getElementById("jumuaOverlay");
+  if(el) el.remove();
 }
 
-/* LOOP */
+/* LOOP SICURO */
 setInterval(handleJumua, 1000);
-
 </script>
 
 </body>
