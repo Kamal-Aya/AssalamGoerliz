@@ -893,7 +893,7 @@ iqama.innerText="";
 }
 
 /* ================= TABLE ================= */
-let icons={Fajr:"🌅",Dhuhr:"☀️",Asr:"🌤",Maghrib:"🌇",Isha:"🌙"};
+let icons={Fajr:"🟡",Dhuhr:"☀️",Asr:"🌤",Maghrib:"🔴",Isha:"🌙"};
 
 let html="";
 for(let p of prayers){
@@ -1087,6 +1087,26 @@ function hideOverlay(){
 
 /* LOOP SICURO */
 setInterval(handleJumua, 1000);
+
+/* ================= TV KEEP ALIVE (WEBOS FIX) ================= */
+
+function keepAlive(){
+
+  // piccolo cambio invisibile (anti idle)
+  document.body.style.transform = "scale(1)";
+  
+  // evento finto
+  window.dispatchEvent(new Event("mousemove"));
+
+  // micro scroll invisibile
+  window.scrollBy(0, 1);
+  window.scrollBy(0, -1);
+
+  console.log("TV ACTIVE");
+}
+
+/* ogni 2 minuti sino mettiamo 1 minuto 60000*/
+setInterval(keepAlive, 120000);
 </script>
 
 </body>
