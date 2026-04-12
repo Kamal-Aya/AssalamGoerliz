@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+  
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -477,13 +478,24 @@ margin-top:20px;
 
 
 </head>
+
 <div id="blackScreen">
   <div id="blackScreenText">🕌 الصلاة</div>
   <div id="blackScreenSub">📵 Bitte Handy ausschalten</div>
 </div>
 
 <body>
-
+  <!-- Video invisibile -->
+<video id="keepAliveVideo" autoplay muted loop playsinline style="
+position:fixed;
+width:1px;
+height:1px;
+opacity:0;
+pointer-events:none;
+z-index:-1;
+">
+  <source src="keepalive.mp4" type="video/mp4">
+</video>
 <!-- HEADER -->
 <div class="header">
 
@@ -613,7 +625,8 @@ clock.innerText=new Date().toLocaleTimeString("de-DE");
 /* ================= WEATHER ================= */
 window.addEventListener("DOMContentLoaded", () => {
   const weatherCityEl = document.getElementById("weatherCity");
-  const weatherTempEl = document.getElementById("weatherTemp");
+  const
+   weatherTempEl = document.getElementById("weatherTemp");
   const weatherIconEl = document.getElementById("weatherIcon");
 
   const city = "Görlitz";
@@ -1089,24 +1102,24 @@ function hideOverlay(){
 setInterval(handleJumua, 1000);
 
 /* ================= TV KEEP ALIVE (WEBOS FIX) ================= */
+/* ================= KEEP ALIVE VIDEO ================= */
 
-function keepAlive(){
+document.addEventListener("DOMContentLoaded", () => {
 
-  // piccolo cambio invisibile (anti idle)
-  document.body.style.transform = "scale(1)";
-  
-  // evento finto
-  window.dispatchEvent(new Event("mousemove"));
+  const v = document.getElementById("keepAliveVideo");
 
-  // micro scroll invisibile
-  window.scrollBy(0, 1);
-  window.scrollBy(0, -1);
+  if(v){
+    v.play().catch(()=>{
+      console.log("Autoplay bloccato → retry");
 
-  console.log("TV ACTIVE");
-}
+      setInterval(()=>{
+        v.play().catch(()=>{});
+      }, 5000);
+    });
+  }
 
-/* ogni 2 minuti sino mettiamo 1 minuto 60000*/
-setInterval(keepAlive, 120000);
+});
+
 </script>
 
 </body>
