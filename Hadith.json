@@ -1,32 +1,102 @@
 [
-{"ar":"إنما الأعمال بالنيات","de":"Taten werden nach Absichten bewertet","source":"Sahih Bukhari"},
-{"ar":"الدين النصيحة","de":"Die Religion ist Aufrichtigkeit","source":"Sahih Muslim"},
-{"ar":"يسروا ولا تعسروا","de":"Erleichtert und erschwert nicht","source":"Bukhari"},
-{"ar":"خيركم من تعلم القرآن","de":"Die Besten sind jene, die den Quran lernen","source":"Bukhari"},
-{"ar":"تبسمك في وجه أخيك صدقة","de":"Ein Lächeln ist eine Spende","source":"Tirmidhi"},
-{"ar":"الحياء شعبة من الإيمان","de":"Scham ist Teil des Glaubens","source":"Bukhari"},
-{"ar":"من لا يرحم لا يُرحم","de":"Wer nicht barmherzig ist, bekommt keine Barmherzigkeit","source":"Muslim"},
-{"ar":"الدعاء هو العبادة","de":"Bittgebet ist Anbetung","source":"Tirmidhi"},
-{"ar":"أحب الأعمال إلى الله أدومها","de":"Die besten Taten sind die beständigen","source":"Bukhari"},
-{"ar":"المؤمن للمؤمن كالبنيان","de":"Gläubige sind wie ein Bauwerk","source":"Bukhari"},
-{"ar":"اتق الله حيثما كنت","de":"Fürchte Allah überall","source":"Tirmidhi"},
-{"ar":"الكلمة الطيبة صدقة","de":"Ein gutes Wort ist eine Spende","source":"Bukhari"},
-{"ar":"من سلك طريقا يلتمس علما","de":"Wer Wissen sucht, dem erleichtert Allah den Weg","source":"Muslim"},
-{"ar":"الدنيا سجن المؤمن","de":"Die Welt ist Gefängnis des Gläubigen","source":"Muslim"},
-{"ar":"الطهور شطر الإيمان","de":"Reinheit ist Hälfte des Glaubens","source":"Muslim"},
-{"ar":"إن الله جميل يحب الجمال","de":"Allah ist schön und liebt Schönheit","source":"Muslim"},
-{"ar":"الرفق لا يكون في شيء إلا زانه","de":"Sanftheit verschönert alles","source":"Muslim"},
-{"ar":"من حسن إسلام المرء","de":"Zum guten Islam gehört gutes Verhalten","source":"Tirmidhi"},
-{"ar":"لا تغضب","de":"Werde nicht zornig","source":"Bukhari"},
-{"ar":"البر حسن الخلق","de":"Frömmigkeit ist gutes Verhalten","source":"Muslim"},
-{"ar":"من غشنا فليس منا","de":"Wer betrügt gehört nicht zu uns","source":"Muslim"},
-{"ar":"خير الناس أنفعهم","de":"Die besten Menschen sind die nützlichsten","source":"Tabarani"},
-{"ar":"أفشوا السلام بينكم","de":"Verbreitet den Salam","source":"Muslim"},
-{"ar":"لا يؤمن أحدكم حتى يحب لأخيه","de":"Keiner glaubt bis er für andere liebt","source":"Bukhari"},
-{"ar":"الدنيا متاع","de":"Die Welt ist Genuss","source":"Muslim"},
-{"ar":"إن الله كتب الإحسان","de":"Allah liebt Güte","source":"Muslim"},
-{"ar":"استعينوا بالله","de":"Sucht Hilfe bei Allah","source":"Tirmidhi"},
-{"ar":"خيركم خيركم لأهله","de":"Die Besten sind gut zu ihren Familien","source":"Tirmidhi"},
-{"ar":"الدال على الخير كفاعله","de":"Wer Gutes zeigt bekommt gleiche Belohnung","source":"Tirmidhi"},
-{"ar":"اتقوا النار ولو بشق تمرة","de":"Schützt euch vor dem Feuer","source":"Bukhari"}
+  {
+    "ar": "خير الدعاء دعاء يوم عرفة",
+    "de": "Das beste Bittgebet ist das Bittgebet am Tag von Arafat.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "ما من يوم أكثر من أن يعتق الله فيه عبدا من النار من يوم عرفة",
+    "de": "An keinem Tag befreit Allah mehr Menschen vom Feuer als am Tag von Arafat.",
+    "source": "Muslim"
+  },
+  {
+    "ar": "صيام يوم عرفة أحتسب على الله أن يكفر السنة التي قبله والتي بعده",
+    "de": "Das Fasten am Tag von Arafat tilgt die Sünden des vergangenen und kommenden Jahres.",
+    "source": "Muslim"
+  },
+  {
+    "ar": "أفضل الأيام عند الله يوم النحر",
+    "de": "Der beste Tag bei Allah ist der Opfertag.",
+    "source": "Abu Dawud"
+  },
+  {
+    "ar": "إن أعظم الأيام عند الله يوم النحر",
+    "de": "Die größten Tage bei Allah sind die Tage des Opferfestes.",
+    "source": "Abu Dawud"
+  },
+  {
+    "ar": "أيام التشريق أيام أكل وشرب وذكر الله",
+    "de": "Die Tage von Tashriq sind Tage des Essens, Trinkens und Gedenkens Allahs.",
+    "source": "Muslim"
+  },
+  {
+    "ar": "من ذبح قبل الصلاة فليعد",
+    "de": "Wer vor dem Gebet opfert, soll erneut opfern.",
+    "source": "Bukhari"
+  },
+  {
+    "ar": "إنما الأعمال بالنيات",
+    "de": "Die Taten sind nur nach den Absichten.",
+    "source": "Bukhari"
+  },
+  {
+    "ar": "الحج عرفة",
+    "de": "Der Hajj ist Arafat.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "خذوا عني مناسككم",
+    "de": "Nehmt eure Rituale von mir.",
+    "source": "Muslim"
+  },
+  {
+    "ar": "خير الناس أنفعهم للناس",
+    "de": "Die besten Menschen sind die nützlichsten für die Menschen.",
+    "source": "Tabarani"
+  },
+  {
+    "ar": "اتقوا الله حيثما كنت",
+    "de": "Fürchtet Allah, wo immer ihr seid.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "يسروا ولا تعسروا",
+    "de": "Erleichtert und erschwert nicht.",
+    "source": "Bukhari"
+  },
+  {
+    "ar": "تبسمك في وجه أخيك صدقة",
+    "de": "Dein Lächeln gegenüber deinem Bruder ist eine Spende.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "أحب الأعمال إلى الله أدومها وإن قل",
+    "de": "Die beliebtesten Taten bei Allah sind die beständigen, auch wenn sie klein sind.",
+    "source": "Bukhari"
+  },
+  {
+    "ar": "الدال على الخير كفاعله",
+    "de": "Wer zum Guten führt, erhält denselben Lohn.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "اتقوا النار ولو بشق تمرة",
+    "de": "Schützt euch vor dem Feuer, auch mit einer halben Dattel.",
+    "source": "Bukhari"
+  },
+  {
+    "ar": "إن الله جميل يحب الجمال",
+    "de": "Allah ist schön und liebt die Schönheit.",
+    "source": "Muslim"
+  },
+  {
+    "ar": "استعينوا بالله",
+    "de": "Sucht Hilfe bei Allah.",
+    "source": "Tirmidhi"
+  },
+  {
+    "ar": "خيركم خيركم لأهله",
+    "de": "Die Besten unter euch sind die Besten zu ihren Familien.",
+    "source": "Tirmidhi"
+  }
 ]
